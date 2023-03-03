@@ -4,7 +4,7 @@
 
 ### Database Topics Covered
 
-1. Easy %rarr; Advanced SQL queries with [**PostgreSQL**](https://www.postgresql.org)
+1. Easy &#8594; Advanced SQL queries with [**PostgreSQL**](https://www.postgresql.org)
 2. using ORM's + Raw SQL queries to connect to API.
 3. [**Alembic**](https://alembic.sqlalchemy.org/en/latest/) - for database version control with [**SQLAlchemy**](https://www.sqlalchemy.org/) 
 
