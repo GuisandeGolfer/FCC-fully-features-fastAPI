@@ -1,6 +1,6 @@
 # Welcome to the start of my fastAPI Documentation
 
-> TDLR; this is a fully functional API that has Authentication, CRUD Operation, Validation, and Documentation.
+> TDLR; this is a fully functional API that has Authentication, CRUD Operation, Validation, and Documentation. Based off of this FreeCodeCamp youtube video: [Python API Development - Comprehensive Course for Beginners](https://www.youtube.com/watch?v=0sOvCWFmrtA&list=PLzK__islD6OumwAMr3U6u11dVLUG5z60h&index=5&t=692s) by [Sanjeev Thiyagarajan](https://www.youtube.com/channel/UC2sYgV-NV6S5_-pqLGChoNQ)
 
 ### Database Topics Covered
 
