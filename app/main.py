@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends
-from pydantic import BaseModel
 import psycopg2
+from typing import List
 from psycopg2.extras import RealDictCursor
-from . import models
+from fastapi import FastAPI, Response, status, HTTPException, Depends
+from . import models, schemas  # to reference the 'Post' class,use schemas.Post
 from .database import engine, get_db
 from sqlalchemy.orm import Session
 import time
@@ -12,12 +12,16 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+'''
+    The class below is a pydantic model which is inherently different from
+    the posts database that is found in 'models.py'.
 
-class Post(BaseModel):
+    The pydantic model defines what kind of response/request is sent from
+    the browser and responded from the API.
 
-    title: str
-    content: str
-    published: bool = True  # optional schema
+    This is also called a schema model. this helps give restrictions to
+    the user submitting data.
+'''
 
 
 while True:
@@ -59,41 +63,35 @@ localhost:8000/docs -> to see this in the browser.
 def read_root():
     return {"message": "Welcome to my API"}
 
-# # test route for sqlalchemy + postgreSQL
-# @app.get('/sqlalchemy')
-# def test_posts(db: Session = Depends(get_db)):
-#     posts = db.query(models.Post).all()
-#     return {"data": posts}
-
 
 @app.get("/posts")
-def get_posts(db: Session = Depends(get_db)):
+def get_posts(db: Session = Depends(get_db), response_model=List[schemas.Post]):
 
     posts = db.query(models.Post).all()
 
-    return {'data': posts}
+    return posts
 
 
 @app.get("/posts/{id}")
-def get_post(id: int, db: Session = Depends(get_db)):
+def get_post(id: int, db: Session = Depends(get_db), response_model=schemas.Post):
     # cursor.execute(""" SELECT * FROM posts WHERE id = %s """, (str(id)))
     # post = cursor.fetchone()
     # print(post)
     post = db.query(models.Post).filter(models.Post.id == id).first()
-    print(post)
 
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'post with id: {id} was not found')
 
-    return {"This is your requested post": post}
+    return post
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)  # HTTP best practices. # like formatting strings in java '%s' and helps to fight SQL injection.
-def create_posts(post: Post, db: Session = Depends(get_db)):
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
+def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     # cursor.execute(
-    # """INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """,
-    #                (post.title, post.content, post.published)) # order matters
+    # """INSERT INTO posts (title, content, published) VALUES (%s, %s, %s)
+    # RETURNING * """,
+    #       (post.title, post.content, post.published)) # order matters
     # new_post = cursor.fetchone()
     #
     # conn.commit()
@@ -104,7 +102,7 @@ def create_posts(post: Post, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_post)
 
-    return {"Data": new_post}
+    return new_post
 
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -127,7 +125,11 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 
 
 @app.put('/posts/{id}')
-def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
+def update_post(id: int,
+                updated_post:
+                schemas.PostCreate,
+                db: Session = Depends(get_db),
+                response_model=schemas.Post):
     # cursor.execute(""" UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, str(id)))
     # updated_post = cursor.fetchone()
     # conn.commit()
@@ -143,13 +145,26 @@ def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
 
     db.commit()
 
-    return {'data': post_query.first()}
+    return post_query.first()
 
     '''
         I got stumped with def update_post
 
-        i kept trying to do post.dict() on line 142 and it was hitting the post var
+        i kept trying to do post.dict() on line 142 and
+        it was hitting the post var
         on line 136. when I wanted to instead update the query with
         the actual updated post that is in the body of the API route
-        reponse. which is now named 'updated_post' on line 130. 
+        reponse. which is now named 'updated_post' on line 130.
     '''
+
+
+@app.post("/users", status_code=status.HTTP_201_CREATED)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+
+    new_user = models.User(**user.dict())  # unpack dict inside 'models.Post()'
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
