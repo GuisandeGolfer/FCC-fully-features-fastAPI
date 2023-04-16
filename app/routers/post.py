@@ -17,7 +17,9 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.
 
     search_term = models.Post.title.contains(search)
 
-    posts = db.query(models.Post).filter(is_post_owner).filter(search_term).limit(limit).offset(skip).all()
+    posts = db.query(models.Post).filter(search_term).limit(limit).offset(skip).all()
+
+#    posts = db.query(models.Post).join(models.Votes, models.Votes.post_id == models.Post.owner_id, isouter=True)
 
     return posts
 
