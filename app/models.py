@@ -4,6 +4,11 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.orm import relationship
 from .database import Base
 
+'''
+   This class is from 'sqlalchemy' and defines what the columns should be
+   in our postgreSQL database. used to help with our CRUD operations
+   to our database.
+'''
 
 # need to use alembic for updating.
 class Post(Base):
@@ -23,12 +28,6 @@ class Post(Base):
 
     owner = relationship("User")
 
-
-'''
-   This class is from 'sqlalchemy' and defines what the columns should be
-   in our postgreSQL database. used to help with our CRUD operations
-   to our database.
-'''
 
 
 class User(Base):
