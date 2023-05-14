@@ -42,6 +42,7 @@ class User(Base):
         TIMESTAMP(timezone=True),
         server_default=text('now()'),
         nullable=False)
+    phone_number = Column(String)
 
 
 class Votes(Base):
