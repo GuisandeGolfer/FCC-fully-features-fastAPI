@@ -10,6 +10,7 @@ from .database import Base
    to our database.
 '''
 
+
 # need to use alembic for updating.
 class Post(Base):
     # if changes are made here, it won't update the postgreSQL db.
