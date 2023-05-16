@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-# from .config import settings
+from .config import settings
 
 # The file that helps us connect/create a database engine on our local machine and eventually in our cloud service through Docker
 
