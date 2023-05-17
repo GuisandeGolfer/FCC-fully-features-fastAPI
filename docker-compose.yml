@@ -1,0 +1,21 @@
+version: "3"
+services:
+  api:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=Diegito23!
+      - POSTGRES_DB=fastapi
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
