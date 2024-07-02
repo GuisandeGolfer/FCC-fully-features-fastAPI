@@ -108,4 +108,4 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-.space
+.spaceapp\/__pycache__\/*
