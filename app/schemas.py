@@ -7,6 +7,7 @@ from pydantic.types import conint
 # These schemas are used in the response/request format of our API routes
 # to validate incoming and outgoing data types.
 
+
 class PostBase(BaseModel):
 
     title: str
@@ -40,7 +41,6 @@ class UserLogin(BaseModel):
 class PostCreate(PostBase):
     pass
 
- 
 
 class Post(PostBase):
 
@@ -53,6 +53,7 @@ class Post(PostBase):
 
         orm_mode = True
 
+
 class PostOut(BaseModel):
     Post: Post
     votes: int
@@ -60,7 +61,6 @@ class PostOut(BaseModel):
     class Config:
 
         orm_mode = True
-
 
 
 class Token(BaseModel):

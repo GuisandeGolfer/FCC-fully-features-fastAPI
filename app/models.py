@@ -30,7 +30,6 @@ class Post(Base):
     owner = relationship("User")
 
 
-
 class User(Base):
     # if changes are made here, it won't update the postgreSQL db.
     # without alembic you have to delete the table and re-create it.
