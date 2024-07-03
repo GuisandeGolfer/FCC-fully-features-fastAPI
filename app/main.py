@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import post, user, auth, vote
+from routers import post, user, auth, vote
 # from .config import settings
 
 # Don't need anymore due to Alembic setup
