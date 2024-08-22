@@ -4,6 +4,7 @@ pycache
 app/__pycache__/*
 *.py[cod]
 *$py.class
+.DS_Store
 
 # Distribution / packaging 
 .Python build/ 
@@ -109,3 +110,4 @@ GitHub.sublime-settings
 .history
 
 .spaceapp\/__pycache__\/*
+.DS_Store
