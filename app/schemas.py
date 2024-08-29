@@ -1,79 +1,98 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+from enum import Enum
 from typing import Optional
-from datetime import datetime
-
-from pydantic.types import conint
-
-# These schemas are used in the response/request format of our API routes
-# to validate incoming and outgoing data types.
 
 
-class PostBase(BaseModel):
-
-    title: str
-    content: str
-    published: bool = True
-
-
-class UserCreate(BaseModel):
-
-    email: EmailStr
-    password: str
+class TaskStatus(str, Enum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 
-class UserOut(BaseModel):
-
-    id: int
-    email: EmailStr
-    created_at: datetime
-
-    class Config:
-
-        orm_mode = True
+class DownloadRequest(BaseModel):
+    url: str
+    detail_level: str
 
 
-class UserLogin(BaseModel):
-
-    email: EmailStr
-    password: str
-
-
-class PostCreate(PostBase):
-    pass
+class TaskResponse(BaseModel):
+    task_id: str
+    status: TaskStatus
 
 
-class Post(PostBase):
+class TaskResult(BaseModel):
+    task_id: str
+    status: TaskStatus
+    result: Optional[str] = None
+    error: Optional[str] = None
 
-    id: int
-    created_at: datetime
-    owner_id: int
-    owner: UserOut
-
-    class Config:
-
-        orm_mode = True
-
-
-class PostOut(BaseModel):
-    Post: Post
-    votes: int
-
-    class Config:
-
-        orm_mode = True
-
-
-class Token(BaseModel):
-
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-
-    id: Optional[str] = None
-
-
-class Vote(BaseModel):
-    post_id: int
-    dir: conint(le=1)
+#class PostBase(BaseModel):
+#
+    #title: str
+    #content: str
+    #published: bool = True
+#
+#
+#class UserCreate(BaseModel):
+#
+    #email: EmailStr
+    #password: str
+#
+#
+#class UserOut(BaseModel):
+#
+    #id: int
+    #email: EmailStr
+    #created_at: datetime
+#
+    #class Config:
+#
+        #orm_mode = True
+#
+#
+#class UserLogin(BaseModel):
+#
+    #email: EmailStr
+    #password: str
+#
+#
+#class PostCreate(PostBase):
+    #pass
+#
+#
+#class Post(PostBase):
+#
+    #id: int
+    #created_at: datetime
+    #owner_id: int
+    #owner: UserOut
+#
+    #class Config:
+#
+        #orm_mode = True
+#
+#
+#class PostOut(BaseModel):
+    #Post: Post
+    #votes: int
+#
+    #class Config:
+#
+        #orm_mode = True
+#
+#
+#class Token(BaseModel):
+#
+    #access_token: str
+    #token_type: str
+#
+#
+#class TokenData(BaseModel):
+#
+    #id: Optional[str] = None
+#
+#
+#class Vote(BaseModel):
+    #post_id: int
+    #dir: conint(le=1)
+#
