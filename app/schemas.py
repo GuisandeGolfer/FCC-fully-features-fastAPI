@@ -23,7 +23,7 @@ class TaskResponse(BaseModel):
 class TaskResult(BaseModel):
     task_id: str
     status: TaskStatus
-    result: Optional[str] = None
+    summary: Optional[str] = None
     error: Optional[str] = None
 
 #class PostBase(BaseModel):

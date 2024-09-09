@@ -5,6 +5,7 @@ app/__pycache__/*
 *.py[cod]
 *$py.class
 .DS_Store
+.webm
 
 # Distribution / packaging 
 .Python build/ 
