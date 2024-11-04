@@ -18,6 +18,7 @@ class DownloadRequest(BaseModel):
 class TaskResponse(BaseModel):
     task_id: str
     status: TaskStatus
+    timestamp: str
 
 
 class TaskResult(BaseModel):
