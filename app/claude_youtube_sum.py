@@ -1,7 +1,5 @@
 import os
 import re
-from app.schemas import TaskStatus 
-import subprocess
 import logging
 from openai import OpenAI
 import yt_dlp
@@ -78,13 +76,14 @@ def ask_gpt_for_summary(transcript: str, url: str) -> str:
                 {"role": "user", "content": f"Hello! Can you help me summarize and write a detailed, yet concise document from this transcript? \n {transcript}, also at the bottom of the summary can you put this url: {url} underneath a h2 md heading like this ![](<insert-url-here>) "}
             ]
         )
+
+        return completion.choices[0].message.content
     except Exception as e:
         print(f"something went wrong with chat completion: {e}")
 
-    return completion.choices[0].message.content
 
 
-async def process_youtube_summary(url: str, detail: str):
+async def process_youtube_summary(url: str, detail: str) -> str:
 
     # TODO:  add 'detail' as a summary argument
     try:
@@ -101,7 +100,8 @@ async def process_youtube_summary(url: str, detail: str):
         # Clean up the audio file
         os.remove(audio_file_path)
 
-        return { "status": "success", "summary": summary }
+        # TaskStatus?
+        return summary
 
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
